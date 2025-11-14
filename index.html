@@ -1,498 +1,2067 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Microsleep AI - Real-Time Detection</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Microsleep AI - Landing Page</title>
 
-  <!-- CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+    <style>
+      section.exit {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+      }
 
-    body {
-      background-color: #0a0a0a;
-      color: #f1f1f1;
-      overflow-x: hidden;
-    }
+      /* SECTION HILANG DI MOBILE */
+      section {
+        opacity: 1 !important;
+        transform: none !important;
+      }
 
-    /* ===== NAVBAR ===== */
-    nav.navbar {
-      background: transparent;
-      transition: all 0.4s ease;
-      z-index: 1000;
-    }
-    nav.navbar.scrolled {
-      background: rgba(10, 10, 10, 0.95);
-      box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
-    }
-    .navbar-brand {
-      font-weight: 700;
-      color: #ff2a2a !important;
-      letter-spacing: 1px;
-    }
-    nav.navbar .nav-link {
-      color: #fff !important;
-      font-weight: 500;
-      margin: 0 10px;
-      transition: 0.3s;
-    }
-    nav.navbar .nav-link.active,
-    nav.navbar .nav-link:hover {
-      color: #ff2a2a !important;
-    }
+      /* ===== FONT CUSTOM ===== */
+      @font-face {
+        font-family: "Mimix";
+        src: url("fonts/glot-black.otf") format("truetype");
+        font-weight: 700;
+        font-style: normal;
+      }
 
-    /* ===== HERO SECTION ===== */
-    #home {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 120px 10%;
-      background: radial-gradient(circle at top left, #0a0a0a 0%, #000000 70%);
-      position: relative;
-    }
+      /* ===== RESET & GLOBAL ===== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
 
-    .hero-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      width: 100%;
-      gap: 60px;
-    }
+      body,
+      p,
+      a,
+      span,
+      li {
+        font-family: "Poppins", sans-serif;
+      }
 
-    .hero-left {
-      flex: 1 1 50%;
-    }
-    .hero-subtitle {
-      color: #ff2a2a;
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-    }
-    .hero-title {
-      font-size: 3.2rem;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 20px;
-    }
-    .hero-title span { color: #ff2a2a; }
-    .hero-desc {
-      color: #bbb;
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-bottom: 30px;
-      max-width: 480px;
-    }
-    .hero-buttons {
-      display: flex;
-      gap: 15px;
-    }
-    .hero-buttons .btn {
-      border-radius: 30px;
-      padding: 12px 28px;
-      font-weight: 600;
-    }
-    .btn-outline-light {
-      border: 1px solid #ff2a2a;
-      color: #ff2a2a;
-    }
-    .btn-outline-light:hover { background: #ff2a2a; color: white; }
-    .btn-danger { background: #ff2a2a; border: none; }
-    .btn-danger:hover { background: #b00000; }
+      h1,
+      h2 {
+        font-family: "Mimix", sans-serif;
+      }
 
-    .hero-right {
-      flex: 1 1 45%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .threejs-wrapper {
-      width: 550px;
-      height: 550px;
-      background: radial-gradient(circle at 50% 40%, rgba(255,0,0,0.15), transparent 60%);
-      border-radius: 50%;
-      box-shadow: 0 0 100px rgba(255,0,0,0.3);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: visible;
-    }
-    canvas#scene {
-      width: 100% !important;
-      height: 100% !important;
-      display: block;
-    }
+      html,
+      body {
+        overflow-x: hidden;
+      }
 
-    /* === Scroll Down Arrow === */
-    .scroll-down {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #ff2a2a;
-      font-size: 2rem;
-      animation: bounce 1.5s infinite;
-      cursor: pointer;
-      z-index: 10;
-    }
-    @keyframes bounce {
-      0%, 100% { transform: translate(-50%, 0); }
-      50% { transform: translate(-50%, -10px); }
-    }
+      body {
+        color: #222;
+        background: linear-gradient(135deg, #ffffff 0%, #f7f7f7 100%);
+        position: relative;
+        min-height: 100vh;
+      }
 
-    /* ===== PROJECT SECTION ===== */
-    #project {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 100px 10%;
-      background: #0a0a0a;
-    }
-    #project .card {
-      background: #141414;
-      color: #fff;
-      border: 1px solid rgba(255,0,0,0.3);
-      transition: 0.4s;
-    }
-    #project .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 0 25px rgba(255,0,0,0.4);
-    }
+      .page-transition {
+        opacity: 0;
+        transform: translateX(40px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
 
-    /* ===== ABOUT ===== */
-    #about {
-      min-height: 100vh;
-      background: url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1470&q=80') center/cover fixed;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 100px 10%;
-    }
-    #about::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-    }
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 30px;
-      position: relative;
-      z-index: 2;
-      width: 100%;
-    }
-    .team-card {
-      background: #111;
-      padding: 20px;
-      border-radius: 15px;
-      text-align: center;
-      transition: 0.3s;
-    }
-    .team-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 0 20px rgba(255,0,0,0.4);
-    }
-    .team-card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
-    .team-card h4 { color: #ff2a2a; }
+      .page-transition.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
 
-    /* ===== CONTACT ===== */
-    #contact {
-      min-height: 100vh;
-      background: url('https://images.unsplash.com/photo-1557682224-5b8590cd9ec5?auto=format&fit=crop&w=1470&q=80') center/cover fixed;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 100px 10%;
-    }
-    #contact::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-    }
-    .contact-form {
-      max-width: 500px;
-      width: 100%;
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    .contact-form input, .contact-form textarea {
-      background: #1a1a1a;
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      padding: 12px;
-    }
-    .contact-form button {
-      background: #ff2a2a;
-      border: none;
-      padding: 12px;
-      border-radius: 25px;
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .contact-form button:hover { background: #b00000; }
+      .page-transition.exit {
+        opacity: 0;
+        transform: translateX(-40px);
+      }
 
-    footer {
-      background: #000;
-      text-align: center;
-      padding: 20px;
-      color: #777;
-      font-size: 0.9em;
-    }
+      /* =================== FULL RESPONSIVE FIX ================= */
 
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 992px) {
-      #home {
-        flex-direction: column;
+      @media (max-width: 1200px) {
+        .hero-text h1 {
+          font-size: 46px;
+        }
+
+        lottie-player {
+          width: 420px !important;
+          height: 320px !important;
+          transform: translateX(0);
+        }
+      }
+
+      @media (max-width: 992px) {
+        nav ul {
+          gap: 18px;
+        }
+
+        .hero {
+          flex-direction: column-reverse;
+          text-align: center;
+          padding: 140px 6% 40px;
+        }
+
+        .hero-text {
+          max-width: 100%;
+        }
+
+        .hero-text h1 {
+          font-size: 40px;
+        }
+
+        .hero-text p {
+          font-size: 16px;
+        }
+
+        lottie-player {
+          width: 340px !important;
+          height: 260px !important;
+          margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+          #mengapa .mengapa-item {
+            width: 100% !important;
+            min-width: unset !important;
+          }
+
+          #cara .cara-item {
+            width: 100% !important;
+            min-width: unset !important;
+          }
+        }
+      }
+
+      .menu-toggle {
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+          font-size: 26px;
+          cursor: pointer;
+          color: #b00000;
+        }
+        /* Navbar hamburger */
+        nav ul {
+          position: fixed;
+          top: 70px;
+          right: -100%;
+          width: 70%;
+          height: 100vh;
+          flex-direction: column;
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(8px);
+          padding-top: 40px;
+          gap: 25px;
+          transition: 0.35s ease;
+        }
+
+        nav ul.active {
+          right: 0;
+        }
+
+        .navbar {
+          padding: 12px 5%;
+        }
+
+        .menu-toggle {
+          display: block;
+          font-size: 26px;
+          cursor: pointer;
+          color: #b00000;
+        }
+
+        .nav-btn {
+          display: none;
+        }
+
+        .hero-text h1 {
+          font-size: 34px;
+        }
+
+        lottie-player {
+          width: 260px !important;
+          height: 220px !important;
+        }
+
+        .stat-item h2 {
+          font-size: 34px;
+        }
+
+        #mengapa div > div,
+        #cara div > div {
+          min-width: 100%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .logo {
+          font-size: 18px;
+        }
+
+        .hero-text h1 {
+          font-size: 28px;
+          line-height: 1.2;
+        }
+
+        .hero-text p {
+          font-size: 15px;
+        }
+
+        lottie-player {
+          width: 220px !important;
+          height: 180px !important;
+        }
+
+        .cta {
+          padding: 12px 26px;
+          font-size: 14px;
+        }
+
+        .footer-container {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .footer-logo {
+          font-size: 1.4rem;
+        }
+
+        .footer-bottom {
+          font-size: 0.8rem;
+        }
+
+        .back-to-top {
+          right: 12px;
+          bottom: 12px;
+          width: 34px;
+          height: 34px;
+          font-size: 14px;
+        }
+      }
+
+      /* ===== RED BLUR CIRCLES ===== */
+      .blur-bg {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(4vw);
+        opacity: 0.7;
+        z-index: -2;
+        pointer-events: none;
+        animation: pulse 6s ease-in-out infinite alternate;
+      }
+
+      .blur1 {
+        width: 16vw;
+        height: 16vw;
+        background: rgba(176, 0, 0, 0.45);
+        top: -5vw;
+        left: -5vw;
+        animation-delay: 0s;
+      }
+      .blur2 {
+        width: 18vw;
+        height: 18vw;
+        background: rgba(176, 0, 0, 0.25);
+        bottom: 0; /* ⬅️ bukan negatif lagi */
+        right: -5vw;
+        animation-delay: 1.2s;
+      }
+      .blur3 {
+        width: 12vw;
+        height: 12vw;
+        background: rgba(176, 0, 0, 0.3);
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation-delay: 2s;
+      }
+      .blur4 {
+        width: 15vw;
+        height: 15vw;
+        background: rgba(176, 0, 0, 0.35);
+        top: -4vw;
+        right: -4vw;
+        animation-delay: 3s;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.65;
+        }
+        100% {
+          transform: scale(1.15);
+          opacity: 0.8;
+        }
+      }
+
+      /* ===== NAVBAR ===== */
+      .navbar {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 6%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        z-index: 999;
+        transition: all 0.3s ease;
+      }
+
+      .navbar:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 22px;
+        font-weight: 700;
+        color: #111;
+      }
+
+      .logo img {
+        height: 40px;
+        width: auto;
+        border-radius: 8px;
+      }
+
+      .logo .highlight {
+        color: #b00000;
+      }
+
+      nav ul {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+        align-items: center;
+      }
+
+      nav ul li a {
+        position: relative;
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        padding: 5px 0;
+      }
+
+      nav ul li a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -3px;
+        width: 0%;
+        height: 2px;
+        background: #b00000;
+        transition: width 0.3s ease;
+      }
+
+      nav ul li a:hover {
+        color: #b00000;
+      }
+
+      nav ul li a:hover::after {
+        width: 100%;
+      }
+
+      .nav-btn {
+        padding: 8px 20px;
+        border-radius: 30px;
+        background: linear-gradient(90deg, #b00000, #d32f2f);
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s;
+        box-shadow: 0 3px 10px rgba(176, 0, 0, 0.25);
+      }
+
+      .nav-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(176, 0, 0, 0.4);
+      }
+
+      /* ===== HERO ===== */
+      .hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 140px 6% 80px;
+        min-height: 100vh;
+        position: relative;
+        z-index: 1;
+      }
+      .cta-group {
+        display: flex;
+        gap: 16px;
+        margin-top: 10px;
+      }
+
+      .cta-demo {
+        display: inline-block;
+        padding: 14px 30px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 40px;
+        text-decoration: none;
+        border: 2px solid #b00000;
+        color: #b00000;
+        transition: 0.25s;
+      }
+
+      .cta-demo:hover {
+        background: #b00000;
+        color: #fff;
+        box-shadow: 0 6px 15px rgba(176, 0, 0, 0.3);
+        transform: translateY(-3px);
+      }
+
+      @media (max-width: 480px) {
+        .cta-group {
+          flex-direction: column;
+          gap: 12px;
+          width: 100%;
+        }
+
+        .cta-demo,
+        .cta {
+          text-align: center;
+          width: 100%;
+        }
+      }
+
+      .hero-text {
+        max-width: 540px;
+        animation: fadeIn 1s ease forwards;
+      }
+
+      .hero-text h1,
+      .hero-text h1 span {
+        font-family: "Mimix", sans-serif !important;
+        font-size: 55px;
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: 0.5px;
+        margin-bottom: 20px;
+      }
+
+      .hero-text h1 .red {
+        color: #b00000;
+      }
+      .hero-text h1 .black {
+        color: #000;
+      }
+
+      .hero-text p {
+        margin: 22px 0 36px;
+        font-size: 18px;
+        color: #555;
+        line-height: 1.7;
+      }
+
+      .cta {
+        display: inline-block;
+        padding: 14px 34px;
+        font-size: 16px;
+        font-weight: 600;
+        background: linear-gradient(90deg, #b00000, #d32f2f);
+        color: #fff;
+        border-radius: 40px;
+        text-decoration: none;
+        transition: 0.25s;
+        box-shadow: 0 6px 15px rgba(176, 0, 0, 0.3);
+      }
+
+      .cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(176, 0, 0, 0.5);
+      }
+
+      .hero-img {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      lottie-player {
+        width: 560px;
+        height: 400px;
+        transform: translateX(25px);
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) translateX(25px);
+        }
+        50% {
+          transform: translateY(-10px) translateX(25px);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ======== TENTANG KAMI ======== */
+
+      #tentang {
+        padding: 90px 6%;
+        background: #fff;
         text-align: center;
-        padding: 100px 6%;
       }
-      .hero-container { flex-direction: column; align-items: center; }
-      .hero-left, .hero-right { flex: 1 1 100%; }
-      .hero-title { font-size: 2.2rem; }
-      .threejs-wrapper { width: 400px; height: 400px; }
-    }
-  </style>
-</head>
 
-<body>
-  <!-- ===== NAVBAR ===== -->
-  <nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#home">Microsleep AI</a>
-      <button class="navbar-toggler bg-danger" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#project">Project</a></li>
-          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+      #tentang h2 {
+        font-size: 40px;
+        color: #b00000;
+        margin-bottom: 25px;
+        font-family: "Mimix", sans-serif;
+      }
 
-  <!-- ===== HERO SECTION ===== -->
-  <section id="home">
-    <div class="hero-container">
-      <div class="hero-left" data-aos="fade-right">
-        <p class="hero-subtitle">Get Started</p>
-        <h1 class="hero-title">A Smart <span>Microsleep Detection</span> System</h1>
-        <p class="hero-desc">Streamline driver safety using real-time Deep Learning (RMN–ResNet) and ESP32-CAM IoT technology.</p>
-        <div class="hero-buttons">
-          <button class="btn btn-outline-light">Watch Demo</button>
-          <button class="btn btn-danger">Get Started</button>
-        </div>
-      </div>
+      #tentang p {
+        max-width: 500px;
+        margin: 0 auto;
+        color: #555;
+        line-height: 1.9;
+        font-size: 17px;
+      }
 
-      <div class="hero-right" data-aos="fade-left">
-        <div class="threejs-wrapper">
-          <canvas id="scene"></canvas>
-        </div>
-      </div>
-    </div>
+      #tentang .about-cards {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        max-width: 1000px;
+        margin: 45px auto 0;
+      }
 
-    <!-- Scroll Arrow -->
-    <div class="scroll-down" onclick="scrollToSection('project')">
-      <i class="bi bi-chevron-double-down"></i>
-    </div>
-  </section>
+      #tentang .about-card {
+        flex: 1;
+        min-width: 260px;
+        background: #fafafa;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+      }
 
-  <!-- ===== PROJECT ===== -->
-  <section id="project" data-aos="fade-up">
-    <h2 class="mb-5 text-center text-danger fw-bold">Our Projects</h2>
-    <div class="row justify-content-center g-4 w-100">
-      <div class="col-md-4">
-        <div class="card p-4 text-center h-100">
-          <i class="bi bi-cpu fs-1 text-danger mb-3"></i>
-          <h4>AI Model RMN–ResNet</h4>
-          <p>Model deep learning untuk klasifikasi microsleep dari ekspresi wajah.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card p-4 text-center h-100">
-          <i class="bi bi-camera-video fs-1 text-danger mb-3"></i>
-          <h4>ESP32-CAM Integration</h4>
-          <p>Kamera IoT mendeteksi kondisi pengemudi secara real-time.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card p-4 text-center h-100">
-          <i class="bi bi-bell fs-1 text-danger mb-3"></i>
-          <h4>Alert System</h4>
-          <p>Alarm dan notifikasi saat microsleep terdeteksi di sistem.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+      #tentang .about-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+      }
 
-  <!-- ===== ABOUT ===== -->
-  <section id="about" data-aos="fade-up">
-    <h2 class="mb-5 text-center text-danger fw-bold position-relative z-2">Our Team</h2>
-    <div class="team-grid">
-      <div class="team-card"><img src="assets/team1.jpg"><h4>Nama 1</h4><p>AI Engineer</p></div>
-      <div class="team-card"><img src="assets/team2.jpg"><h4>Nama 2</h4><p>IoT Developer</p></div>
-      <div class="team-card"><img src="assets/team3.jpg"><h4>Nama 3</h4><p>Web Designer</p></div>
-      <div class="team-card"><img src="assets/team4.jpg"><h4>Nama 4</h4><p>Research Analyst</p></div>
-    </div>
-  </section>
+      #tentang .about-card h3 {
+        color: #b00000;
+        margin-bottom: 10px;
+        font-size: 22px;
+        font-weight: 700;
+      }
 
-  <!-- ===== CONTACT ===== -->
-  <section id="contact" data-aos="fade-up">
-    <h2 class="mb-5 text-center text-danger fw-bold position-relative z-2">Contact Us</h2>
-    <form class="contact-form">
-      <input type="text" placeholder="Nama" required>
-      <input type="email" placeholder="Email" required>
-      <textarea placeholder="Pesan..." rows="5" required></textarea>
-      <button type="submit">Kirim Pesan</button>
-    </form>
-  </section>
+      #tentang .about-card p {
+        color: #555;
+        line-height: 1.7;
+        font-size: 15px;
+      }
 
-  <footer>
-    <p>© 2025 Microsleep AI | Politeknik Negeri Jember</p>
-  </footer>
-
-  <!-- JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-
-  <script>
-    // === AOS ===
-    AOS.init({ duration: 900, once: false, mirror: true, offset: 100 });
-
-    // === Navbar Scroll + Active Menu ===
-    const navbar = document.querySelector('.navbar');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 50);
-
-      let fromTop = window.scrollY + 200;
-      navLinks.forEach(link => {
-        let section = document.querySelector(link.getAttribute('href'));
-        if (section.offsetTop <= fromTop && section.offsetTop + section.offsetHeight > fromTop) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
+      @media (max-width: 768px) {
+        #tentang {
+          padding: 70px 6%;
         }
+
+        #tentang h2 {
+          font-size: 32px;
+        }
+
+        #tentang p {
+          font-size: 15px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        #tentang .about-card {
+          padding: 20px;
+        }
+
+        #tentang .about-card h3 {
+          font-size: 20px;
+        }
+
+        #tentang .about-card p {
+          font-size: 14px;
+        }
+      }
+
+      /* =================== MENGAPA MEMILIH KAMI =================== */
+      .mengapa-section {
+        padding: 90px 6%;
+        background: #ffffff;
+        text-align: center;
+      }
+
+      .mengapa-title {
+        font-size: 38px;
+        color: #b00000;
+        font-family: "Mimix";
+        margin-bottom: 12px;
+      }
+
+      .mengapa-subtitle {
+        max-width: 720px;
+        margin: 0 auto 50px;
+        color: #555;
+        font-size: 16.5px;
+        line-height: 1.8;
+      }
+
+      .mengapa-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 28px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .mengapa-item {
+        background: #fff;
+        border-radius: 18px;
+        padding: 28px 26px;
+        text-align: center;
+        border: 1px solid #eee;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        transition: 0.35s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .mengapa-item:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+      }
+
+      .mengapa-icon {
+        font-size: 42px;
+        margin-bottom: 12px;
+        animation: floatIcon 3s ease-in-out infinite;
+      }
+
+      @keyframes floatIcon {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+      }
+
+      .mengapa-item h3 {
+        color: #b00000;
+        font-size: 18px;
+        margin-bottom: 6px;
+        font-weight: 700;
+      }
+
+      .mengapa-item p {
+        font-size: 15px;
+        color: #555;
+        line-height: 1.7;
+      }
+
+      @media (max-width: 480px) {
+        .mengapa-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ===================== FITUR SECTION (BG MERAH) ===================== */
+      .fitur-section {
+        padding: 90px 6%;
+        background: #b00000;
+        text-align: center;
+        color: #fff;
+      }
+
+      .fitur-title {
+        font-size: 36px;
+        font-family: "Mimix";
+        color: #fff;
+        margin-bottom: 12px;
+      }
+
+      .fitur-subtitle {
+        max-width: 760px;
+        margin: 0 auto 45px;
+        font-size: 16.5px;
+        color: #ffffffcc;
+        line-height: 1.8;
+      }
+
+      .fitur-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 25px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .fitur-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 28px;
+        text-align: center;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+        transition: 0.35s ease;
+        border: none;
+      }
+
+      .fitur-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      }
+
+      .fitur-icon {
+        font-size: 42px;
+        margin-bottom: 10px;
+      }
+
+      .fitur-card h3 {
+        color: #b00000;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .fitur-card p {
+        font-size: 15px;
+        color: #444;
+        line-height: 1.6;
+      }
+
+      .fitur-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      @media (max-width: 992px) {
+        .fitur-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .fitur-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .fitur-grid {
+          grid-template-columns: 1fr !important;
+        }
+
+        .fitur-card,
+        .fitur-section {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+
+      /* ======================= CARA KERJA  ======================== */
+      .cara-section {
+        padding: 90px 6%;
+        background: #f7f7f7;
+        text-align: center;
+      }
+
+      .cara-title {
+        font-size: 38px;
+        color: #b00000;
+        font-family: "Mimix";
+        margin-bottom: 15px;
+      }
+
+      .cara-subtitle {
+        max-width: 700px;
+        margin: 0 auto 50px;
+        color: #555;
+        font-size: 16.5px;
+        line-height: 1.7;
+      }
+
+      .cara-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        position: relative;
+      }
+
+      .cara-wrapper::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 40px;
+        width: 4px;
+        height: calc(100% - 50px); /* ⬅️ INI FIX UTAMA */
+        background: #b00000;
+        transform: translateX(-50%);
+        border-radius: 4px;
+      }
+
+      .cara-item {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        padding: 25px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+        width: 48%;
+        position: relative;
+      }
+
+      .cara-item:nth-child(odd) {
+        align-self: flex-start;
+      }
+      .cara-item:nth-child(even) {
+        align-self: flex-end;
+      }
+
+      .cara-item::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 18px;
+        height: 18px;
+        background: #b00000;
+        border-radius: 50%;
+        transform: translateY(-50%);
+        box-shadow: 0 0 10px rgba(176, 0, 0, 0.5);
+      }
+
+      .cara-item:nth-child(odd)::before {
+        right: -42px;
+      }
+      .cara-item:nth-child(even)::before {
+        left: -42px;
+      }
+
+      .cara-icon {
+        font-size: 48px;
+        width: 70px;
+        text-align: center;
+      }
+
+      .cara-text h3 {
+        font-size: 20px;
+        color: #b00000;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .cara-text p {
+        font-size: 15px;
+        color: #555;
+        line-height: 1.6;
+      }
+
+      /* ====================== RESPONSIVE ====================== */
+      @media (max-width: 768px) {
+        .cara-wrapper::before {
+          display: none;
+        }
+
+        .cara-item {
+          width: 100%;
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .cara-item::before {
+          display: none;
+        }
+      }
+
+      /* ====== FOOTER ====== */
+      :root {
+        --brand: #b00000;
+      }
+
+      .footer-section {
+        background: #000;
+        padding: 60px 6% 30px;
+        border-top: 1px solid rgba(255, 0, 0, 0.25);
+        position: relative;
+        margin-top: 80px;
+      }
+
+      .footer-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 35px;
+      }
+      .footer-logo {
+        font-size: 1.7rem;
+        font-weight: 700;
+      }
+      .footer-logo span {
+        color: var(--brand);
+      }
+
+      .footer-col h4 {
+        font-size: 1.1rem;
+        margin-bottom: 14px;
+        color: var(--brand);
+      }
+      .footer-col ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .footer-col ul li {
+        margin-bottom: 6px;
+      }
+      .footer-col ul li a {
+        color: #bdbdbd;
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: 0.3s;
+      }
+      .footer-col ul li a:hover {
+        color: var(--brand);
+      }
+
+      .footer-social a {
+        font-size: 1.3rem;
+        margin-right: 10px;
+        color: #fff;
+        transition: 0.3s;
+      }
+      .footer-social a:hover {
+        color: var(--brand);
+        text-shadow: 0 0 8px rgba(255, 42, 42, 0.8);
+      }
+
+      .footer-map iframe {
+        border-radius: 8px;
+        filter: grayscale(30%) brightness(80%);
+        transition: 0.3s;
+      }
+      .footer-map iframe:hover {
+        filter: none;
+      }
+
+      .status-list {
+        list-style: none;
+        padding: 0;
+        font-size: 0.95rem;
+      }
+      .status-list li {
+        margin-bottom: 6px;
+      }
+      .status-list span {
+        color: #aaa;
+      }
+      #status-ai,
+      #status-cam,
+      #status-last {
+        color: #fff;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 40px;
+        padding-top: 18px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #888;
+        position: relative;
+      }
+
+      .back-to-top {
+        position: absolute;
+        right: 20px;
+        bottom: 12px;
+        background: var(--brand);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .back-to-top:hover {
+        background: #b00000;
+      }
+
+      @media (max-width: 600px) {
+        .footer-col {
+          text-align: center;
+        }
+        .footer-social {
+          text-align: center;
+        }
+        .footer-map iframe {
+          height: 140px;
+        }
+        .back-to-top {
+          right: 10px;
+          bottom: 10px;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .hero {
+          flex-direction: column-reverse;
+          text-align: center;
+          padding: 150px 6% 60px;
+        }
+
+        lottie-player {
+          width: 280px;
+          height: 280px;
+          margin-top: 30px;
+          transform: translateX(15px);
+        }
+      }
+
+      /* ======== STATISTIK SECTION ======== */
+      .stats {
+        background: #b00000;
+        color: #fff;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 30px 5%;
+        text-align: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .stat-item {
+        flex: 1;
+        min-width: 180px;
+      }
+
+      .stat-item h2 {
+        font-size: 42px;
+        font-family: "Mimix", sans-serif;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .stat-item p {
+        font-size: 16px;
+        opacity: 0.9;
+        font-weight: 400;
+      }
+
+      .divider {
+        width: 1px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.4);
+      }
+
+      @media (max-width: 768px) {
+        .stats {
+          flex-direction: column;
+          gap: 30px;
+        }
+
+        .divider {
+          display: none;
+        }
+      }
+
+      section {
+        scroll-margin-top: 100px;
+      }
+
+      /* ===================== ANIMASI MASUK & KELUAR SMOOTH ================== */
+
+      .fade-section,
+      .animate-up,
+      .animate-left,
+      .animate-right {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.8s ease-out,
+          transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform, opacity;
+      }
+
+      .animate-up {
+        transform: translateY(20px);
+      }
+      .animate-up.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .animate-left {
+        transform: translateX(-20px);
+      }
+      .animate-left.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .animate-right {
+        transform: translateX(20px);
+      }
+      .animate-right.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .fade-section {
+        transform: translateY(15px);
+      }
+      .fade-section.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .fade-out {
+        opacity: 0 !important;
+        transform: translateY(25px) !important;
+      }
+    </style>
+    <script>
+      document.querySelectorAll('nav a[href^="#"]').forEach((link) => {
+        link.addEventListener("click", function (e) {
+          const href = this.getAttribute("href");
+
+          if (href === "#") return;
+
+          const section = document.querySelector(href);
+          if (!section) return;
+
+          e.preventDefault();
+
+          document.body.classList.add("exit-page");
+
+          setTimeout(() => {
+            const offset = 90;
+            window.scrollTo({
+              top: section.offsetTop - offset,
+              behavior: "smooth",
+            });
+          }, 150);
+
+          setTimeout(() => {
+            document.body.classList.remove("exit-page");
+          }, 600);
+        });
       });
-    });
+    </script>
 
-    // === Scroll to Section ===
-    function scrollToSection(id) {
-      document.getElementById(id).scrollIntoView({ behavior: "smooth" });
-    }
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  </head>
 
-    // === THREE.js 3D Model ===
-    const canvas = document.getElementById("scene");
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
-    camera.position.set(0, 0, 6);
+  <body>
+    <!-- RED BLUR CIRCLES -->
+    <div class="blur-bg blur1"></div>
+    <div class="blur-bg blur2"></div>
+    <div class="blur-bg blur3"></div>
+    <div class="blur-bg blur4"></div>
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvas,
-      antialias: true,
-      alpha: true
-    });
-    renderer.setSize(550, 550);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setClearColor(0x000000, 0);
-
-    // === Lighting ===
-    const ambient = new THREE.AmbientLight(0xffffff, 1.2);
-    scene.add(ambient);
-
-    const pointLight = new THREE.PointLight(0xff2a2a, 2, 100);
-    pointLight.position.set(3, 3, 5);
-    scene.add(pointLight);
-
-    const spotLight = new THREE.SpotLight(0xffffff, 1.5);
-    spotLight.position.set(-5, 5, 5);
-    spotLight.castShadow = true;
-    scene.add(spotLight);
-
-    // === Load Model ===
-    const loader = new THREE.GLTFLoader();
-    let model;
-
-    loader.load(
-      "assets/source/model.glb",
-      function (gltf) {
-        model = gltf.scene;
-
-        const box = new THREE.Box3().setFromObject(model);
-        const size = box.getSize(new THREE.Vector3()).length();
-        const center = box.getCenter(new THREE.Vector3());
-
-        model.position.sub(center);
-        model.scale.setScalar(5 / size);
-        model.position.y = -0.6;
-        model.position.x = 0.2;
-
-        scene.add(model);
-        console.log("✅ Model berhasil dimuat");
-      },
-      (xhr) => {
-        if (xhr.lengthComputable) {
-          const percentComplete = (xhr.loaded / xhr.total * 100);
-          console.log(`⏳ Loading model: ${percentComplete.toFixed(1)}%`);
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <div class="logo">
+        <img src="assets/image/logo.png" alt="Logo Microsleep AI" />
+        <span>Microsleep<span class="highlight">AI</span></span>
+      </div>
+      <nav>
+        <span class="menu-toggle" onclick="toggleMenu()">☰</span>
+        <ul id="navMenu">
+          <li><a href="#">Home</a></li>
+          <li><a href="#kalkulator">Kalkulator Risiko</a></li>
+          <li><a href="#tentang">Tentang Kami</a></li>
+          <li><a href="#mengapa">Mengapa Kami</a></li>
+          <li><a href="#fitur">Fitur</a></li>
+          <li><a href="#cara">Cara Kerja</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <script>
+        function toggleMenu() {
+          document.getElementById("navMenu").classList.toggle("active");
         }
-      },
-      (error) => {
-        console.error("❌ Gagal memuat model:", error);
-        // Tampilkan fallback geometry jika model gagal dimuat
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshStandardMaterial({ color: 0xff2a2a });
-        model = new THREE.Mesh(geometry, material);
-        scene.add(model);
-      }
-    );
+      </script>
+    </header>
 
-    // === Animation ===
-    function animate() {
-      requestAnimationFrame(animate);
-      if (model) model.rotation.y += 0.005;
-      renderer.render(scene, camera);
-    }
-    animate();
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-text animate-left">
+        <h1>
+          <span class="red"> Sistem Deteksi </span><br />
+          <span class="black"> Microsleep </span>
+        </h1>
+        <p>
+          Microsleep terjadi hanya dalam hitungan detik, tapi dampaknya bisa
+          fatal. Dengan teknologi Deep Learning dan IoT sistem kami mendeteksi
+          tanda-tanda microsleep secara real-time untuk memberi peringatan dini
+          sebelum kecelakaan terjadi.
+        </p>
+        <div class="cta-group">
+          <a href="#" class="cta-demo">Unduh Aplikasi</a>
+          <a href="demo.html" class="cta">Coba Sekarang</a>
+        </div>
+      </div>
 
-    // === Responsif ===
-    window.addEventListener("resize", () => {
-      const wrapper = document.querySelector('.threejs-wrapper');
-      if (wrapper) {
-        const size = Math.min(wrapper.clientWidth, wrapper.clientHeight);
-        camera.aspect = 1;
-        camera.updateProjectionMatrix();
-        renderer.setSize(size, size);
+      <div class="hero-img animate-right">
+        <lottie-player
+          src="assets/image/woman.json"
+          background="transparent"
+          speed="1"
+          loop
+          autoplay
+        >
+        </lottie-player>
+      </div>
+    </section>
+
+    <!-- ======== STATISTIK SECTION ======== -->
+    <section class="stats fade-section">
+      <div class="stat-item">
+        <h2 class="counter" data-target="130000">0</h2>
+        <p>Datasets Trained</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="stat-item">
+        <h2 class="counter" data-target="97">0</h2>
+        <p>Model Accuracy (%)</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="stat-item">
+        <h2 class="counter" data-target="120">0</h2>
+        <p>Real-Time Speed (ms)</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="stat-item">
+        <h2 class="counter" data-target="4">0</h2>
+        <p>Integrated IoT Modules</p>
+      </div>
+    </section>
+
+    <!-- ========= RISIKO MICROSLEEP CALCULATOR =========== -->
+    <section
+      id="kalkulator"
+      class="fade-section"
+      style="padding: 80px 6%; background: #fff"
+    >
+      <h2
+        style="
+          font-size: 36px;
+          color: #b00000;
+          text-align: center;
+          margin-bottom: 10px;
+        "
+      >
+        Kalkulator Risiko Personal
+      </h2>
+      <p
+        style="
+          text-align: center;
+          max-width: 700px;
+          margin: 0 auto;
+          color: #555;
+        "
+      >
+        Hitung tingkat risiko microsleep berdasarkan durasi mengemudi harian
+        Anda.
+      </p>
+
+      <!-- WRAPPER -->
+      <div
+        style="
+          max-width: 780px;
+          margin: 40px auto;
+          padding: 30px;
+          border-radius: 14px;
+          background: #fafafa;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        "
+        class="animate-up"
+      >
+        <label style="font-weight: 600; font-size: 17px; color: #333">
+          Berapa jam Anda mengemudi per hari?
+        </label>
+
+        <!-- SLIDER -->
+        <input
+          id="jamSlider"
+          type="range"
+          min="1"
+          max="16"
+          value="8"
+          style="width: 100%; margin: 15px 0"
+        />
+
+        <!-- RANGE LABELS -->
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #777;
+          "
+        >
+          <span>1 jam</span>
+          <span>8 jam</span>
+          <span>16 jam</span>
+        </div>
+
+        <!-- HASIL -->
+        <div
+          style="
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+          "
+        >
+          <h1
+            id="jamHasil"
+            style="font-size: 48px; margin-bottom: 5px; font-family: 'Mimix'"
+          >
+            8
+          </h1>
+          <p style="margin-top: -10px; color: #555">jam / hari</p>
+
+          <h2
+            id="riskLabel"
+            style="
+              font-size: 28px;
+              font-weight: 700;
+              margin-top: 18px;
+              color: #b00000;
+            "
+          >
+            Risiko: Medium
+          </h2>
+
+          <p id="riskDesc" style="color: #777; margin-top: 10px">
+            Risiko sedang. Ikuti rekomendasi keselamatan untuk mengurangi
+            potensi bahaya microsleep.
+          </p>
+        </div>
+
+        <!-- REKOMENDASI -->
+        <div
+          style="
+            margin-top: 30px;
+            background: #fff;
+            padding: 22px;
+            border-radius: 12px;
+            border-left: 5px solid #b00000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <h3 style="color: #b00000; margin-bottom: 10px">
+            💡 Rekomendasi Keselamatan
+          </h3>
+          <p id="saranText" style="color: #555; line-height: 1.7">
+            Dengan mengemudi 8 jam/hari, Anda berada pada tingkat risiko sedang.
+            Disarankan istirahat setiap 2 jam.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TENTANG KAMI -->
+
+    <section id="tentang" style="padding: 60px 6%; background: #f2f2f2">
+      <div
+        style="
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 20px;
+          flex-wrap: wrap;
+          max-width: 1250px;
+          margin: 0 auto;
+          margin-bottom: -70px;
+        "
+      >
+        <div
+          style="
+            flex: 1;
+            min-width: 350px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          "
+        >
+          <h2
+            style="
+              font-size: 40px;
+              font-family: 'Mimix';
+              color: #b00000;
+              margin-bottom: 10px;
+            "
+          >
+            Tentang Kami
+          </h2>
+
+          <p
+            style="
+              color: #555;
+              font-size: 17px;
+              line-height: 1.7;
+              max-width: 520px;
+              margin: 0 auto 10px auto !important;
+            "
+          >
+            Microsleep AI adalah sistem keselamatan berkendara berbasis
+            <b style="color: #b00000">AI Vision</b> dan
+            <b style="color: #b00000">IoT</b>. Sistem ini mendeteksi tanda
+            microsleep secara real-time, menggabungkan kamera, deep learning,
+            serta perangkat IoT untuk memberi peringatan sebelum kecelakaan
+            terjadi.
+          </p>
+
+          <lottie-player
+            src="assets/image/About Us Team.json"
+            background="transparent"
+            speed="1"
+            style="width: 500px; height: 500px; margin-top: -50px"
+            loop
+            autoplay
+          >
+          </lottie-player>
+        </div>
+
+        <div
+          style="
+            flex: 1;
+            min-width: 360px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+          "
+        >
+          <div
+            style="
+              background: white;
+              border-radius: 14px;
+              padding: 25px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+              text-align: center;
+            "
+          >
+            <h3 style="color: #b00000; font-size: 20px; margin-bottom: 10px">
+              Visi
+            </h3>
+            <p style="color: #555; line-height: 1.6">
+              Menjadi solusi keselamatan berbasis AI yang cepat, akurat, dan
+              mudah digunakan oleh semua jenis kendaraan.
+            </p>
+          </div>
+
+          <div
+            style="
+              background: white;
+              border-radius: 14px;
+              padding: 25px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+              text-align: center;
+            "
+          >
+            <h3 style="color: #b00000; font-size: 20px; margin-bottom: 10px">
+              Misi
+            </h3>
+            <p style="color: #555; line-height: 1.6">
+              Mengembangkan teknologi pendeteksi microsleep yang ringan, dapat
+              diintegrasikan dan bekerja stabil secara real-time.
+            </p>
+          </div>
+
+          <div
+            style="
+              background: white;
+              border-radius: 14px;
+              padding: 25px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+              text-align: center;
+            "
+          >
+            <h3 style="color: #b00000; font-size: 20px; margin-bottom: 10px">
+              Nilai
+            </h3>
+            <p style="color: #555; line-height: 1.6">
+              Inovasi, keamanan, dan kecepatan adalah fondasi kami dalam
+              menciptakan sistem yang dapat mencegah kecelakaan.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        @media (max-width: 768px) {
+          #tentang lottie-player {
+            width: 260px !important;
+            height: 260px !important;
+          }
+          #tentang h2 {
+            font-size: 32px !important;
+          }
+          #tentang p {
+            font-size: 15px !important;
+          }
+        }
+      </style>
+    </section>
+
+    <!-- ======== MENGAPA KAMI (ALTERNATING + ANIMATION) ======== -->
+    <section id="mengapa" class="mengapa-section fade-section">
+      <h2 class="mengapa-title">Mengapa Memilih Kami?</h2>
+      <p class="mengapa-subtitle">
+        Sistem Microsleep AI dirancang dengan teknologi cerdas, performa tinggi,
+        dan pengalaman pengguna yang optimal.
+      </p>
+
+      <div class="mengapa-grid">
+        <div class="mengapa-item animate-up">
+          <div class="mengapa-icon">🎯</div>
+          <h3>Akurasi Hingga 97%</h3>
+          <p>
+            Model AI dilatih dengan 130.000+ dataset untuk mendeteksi tanda
+            kantuk dan microsleep secara presisi.
+          </p>
+        </div>
+
+        <div class="mengapa-item animate-up">
+          <div class="mengapa-icon">⚡</div>
+          <h3>Respons Cepat</h3>
+          <p>
+            Proses inferensi AI hanya membutuhkan 80–120 ms sehingga cocok untuk
+            real-time monitoring.
+          </p>
+        </div>
+
+        <div class="mengapa-item animate-up">
+          <div class="mengapa-icon">📡</div>
+          <h3>Terintegrasi IoT</h3>
+          <p>
+            ESP32-CAM, GPS, dan modul IoT bekerja sinkron untuk memberikan data
+            real-time yang akurat.
+          </p>
+        </div>
+
+        <div class="mengapa-item animate-up">
+          <div class="mengapa-icon">🔔</div>
+          <h3>Peringatan Instan</h3>
+          <p>
+            Alarm, getaran, dan notifikasi otomatis aktif saat microsleep
+            terdeteksi.
+          </p>
+        </div>
+
+        <div class="mengapa-item animate-up">
+          <div class="mengapa-icon">🛠️</div>
+          <h3>Instalasi Mudah</h3>
+          <p>
+            Plug-and-play — tidak perlu modifikasi pada kendaraan, langsung bisa
+            digunakan.
+          </p>
+        </div>
+
+        <div class="mengapa-item animate-up">
+          <div class="mengapa-icon">📊</div>
+          <h3>Analitik Perilaku</h3>
+          <p>
+            Data rekaman microsleep tersimpan otomatis dan dapat dianalisis
+            melalui dashboard aplikasi.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANIMASI CARD -->
+    <style>
+      .mengapa-card {
+        padding: 25px 28px;
+        border-radius: 18px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        text-align: left;
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
       }
-    });
-  </script>
-</body>
+
+      .mengapa-card h3 {
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 17.5px;
+      }
+
+      .mengapa-card p {
+        color: #555;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .mengapa-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      }
+    </style>
+
+    <section id="fitur" class="fitur-section fade-section">
+      <h2 class="fitur-title">Fitur Utama</h2>
+      <p class="fitur-subtitle">
+        Microsleep AI dirancang untuk memberikan perlindungan maksimal dengan
+        teknologi AI Vision dan IoT yang bekerja secara real-time serta akurat.
+      </p>
+
+      <div class="fitur-grid">
+        <div class="fitur-card animate-up">
+          <div class="fitur-icon">👁️</div>
+          <h3>Deteksi Mata Tertutup</h3>
+          <p>
+            Model MobileNetV3 mendeteksi penutupan mata dengan akurasi tinggi.
+          </p>
+        </div>
+
+        <div class="fitur-card animate-up">
+          <div class="fitur-icon">😮‍💨</div>
+          <h3>Deteksi Menguap</h3>
+          <p>
+            EfficientNet memantau ekspresi wajah dan mengenali tanda kantuk.
+          </p>
+        </div>
+
+        <div class="fitur-card animate-up">
+          <div class="fitur-icon">🧠</div>
+          <h3>AI Real-Time</h3>
+          <p>Prediksi microsleep dilakukan hanya dalam 80–120 ms.</p>
+        </div>
+
+        <div class="fitur-card animate-up">
+          <div class="fitur-icon">📡</div>
+          <h3>Integrasi IoT</h3>
+          <p>ESP32-CAM, GPS, dan modul ESP terhubung langsung ke cloud.</p>
+        </div>
+
+        <div class="fitur-card animate-up">
+          <div class="fitur-icon">🔔</div>
+          <h3>Alarm Otomatis</h3>
+          <p>
+            Suara, getaran, dan notifikasi muncul saat microsleep terdeteksi.
+          </p>
+        </div>
+
+        <div class="fitur-card animate-up">
+          <div class="fitur-icon">📍</div>
+          <h3>GPS Tracking</h3>
+          <p>Posisi kendaraan dipantau secara real-time via Firebase.</p>
+        </div>
+
+        <div class="fitur-card animate-up">
+          <div class="fitur-icon">📊</div>
+          <h3>Dashboard Statistik</h3>
+          <p>Histori microsleep disimpan dan divisualisasikan di aplikasi.</p>
+        </div>
+
+        <div class="fitur-card animate-up">
+          <div class="fitur-icon">🚗</div>
+          <h3>Modul Kendaraan</h3>
+          <p>IoT mengontrol motor driver untuk memperlambat kendaraan.</p>
+        </div>
+
+        <!-- CARD BARU DITARUH DI SINI -->
+        <div class="fitur-card animate-up">
+          <div class="fitur-icon">📐</div>
+          <h3>Hybrid Vision Detection</h3>
+          <p>
+            Sistem menggabungkan AI dan pengolahan citra visual (EAR & MAR)
+            untuk mendeteksi microsleep dengan akurasi lebih tinggi.
+          </p>
+        </div>
+      </div>
+      <!-- AKHIR GRID -->
+    </section>
+
+    <!-- ======== CARA KERJA ======== -->
+    <section id="cara" class="cara-section fade-section">
+      <h2 class="cara-title">Cara Kerja Sistem</h2>
+      <p class="cara-subtitle">
+        Sistem Microsleep AI bekerja melalui integrasi Webcam, AI Vision, Deep
+        Learning dan IoT yang berjalan secara real-time.
+      </p>
+
+      <div class="cara-wrapper">
+        <!-- 1 -->
+        <div class="cara-item animate-left">
+          <div class="cara-icon">📷</div>
+          <div class="cara-text">
+            <h3>1. Webcam Mengambil Gambar</h3>
+            <p>
+              Web browser menggunakan JavaScript untuk mengakses webcam dan
+              mengirim frame ke Flask server.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="cara-item animate-right">
+          <div class="cara-icon">🔍</div>
+          <div class="cara-text">
+            <h3>2. MediaPipe Deteksi Area Mata & Mulut</h3>
+            <p>
+              Flask menerima frame, kemudian MediaPipe FaceMesh mengambil ROI
+              mata & mulut secara presisi.
+            </p>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="cara-item animate-left">
+          <div class="cara-icon">🤖</div>
+          <div class="cara-text">
+            <h3>3. MobileNetV3 & EfficientNet Melakukan Klasifikasi</h3>
+            <p>
+              MobileNetV3-Small memprediksi <b>open_eyes / close_eyes</b>,
+              sedangkan EfficientNet-B0 memprediksi <b>yawn / no_yawn</b>.
+            </p>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="cara-item animate-right">
+          <div class="cara-icon">🧠</div>
+          <div class="cara-text">
+            <h3>4. Logic Microsleep Diproses</h3>
+            <p>
+              Sistem menghitung durasi mata tertutup & menguap untuk menentukan
+              status
+              <b>normal, alert, atau microsleep</b>.
+            </p>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="cara-item animate-left">
+          <div class="cara-icon">☁️</div>
+          <div class="cara-text">
+            <h3>5. Data Dikirim ke Firebase</h3>
+            <p>
+              Status real-time dikirimkan ke Firebase untuk diakses Mobile App
+              dan IoT Module.
+            </p>
+          </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="cara-item animate-right">
+          <div class="cara-icon">🚗</div>
+          <div class="cara-text">
+            <h3>6. IoT Mengontrol Motor Driver</h3>
+            <p>
+              NodeMCU/ESP8266 mengatur tegangan motor driver untuk memperlambat
+              kendaraan.
+            </p>
+          </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="cara-item animate-left">
+          <div class="cara-icon">📱</div>
+          <div class="cara-text">
+            <h3>7. Mobile App Mengaktifkan Alarm</h3>
+            <p>
+              Aplikasi menampilkan status dan menyalakan alarm saat microsleep
+              terdeteksi.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ANIMATION OBSERVER SCRIPT ===================== -->
+    <script>
+      const elements = document.querySelectorAll(
+        ".fade-section, .animate-up, .animate-left, .animate-right"
+      );
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            } else {
+              entry.target.classList.remove("active");
+            }
+          });
+        },
+        {
+          threshold: 0.35,
+          rootMargin: "0px 0px -10% 0px",
+        }
+      );
+
+      elements.forEach((el) => observer.observe(el));
+    </script>
+    <!-- ============== FOOTER  ============== -->
+    <footer class="footer-section" id="contact">
+      <div class="footer-container">
+        <!-- LOGO + DESKRIPSI -->
+        <div class="footer-col">
+          <h3 class="footer-logo" style="color: #fff">
+            Microsleep <span>AI</span>
+          </h3>
+          <p style="color: #ccc; margin-bottom: 15px">
+            Real-time microsleep detection using AI Vision and IoT-based alert
+            system.
+          </p>
+
+          <div class="footer-social">
+            <a href="#"><i class="bi bi-github"></i></a>
+            <a href="#"><i class="bi bi-youtube"></i></a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
+            <a href="mailto:microsleep.ai@mail.com">
+              <i class="bi bi-envelope-fill"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#kalkulator">Kalkulator Risiko</a></li>
+            <li><a href="#tentang">Tentang Kami</a></li>
+            <li><a href="#mengapa">Mengapa Kami</a></li>
+            <li><a href="#fitur">Fitur</a></li>
+            <li><a href="#cara">Cara Kerja</a></li>
+            <li>
+              <a href="https://github.com/" target="_blank">GitHub Repo</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p style="color: #bbb">
+            <i class="bi bi-geo-alt"></i> Politeknik Negeri Jember
+          </p>
+          <p style="color: #bbb">
+            <i class="bi bi-envelope"></i> microsleep.ai@mail.com
+          </p>
+          <p style="color: #bbb">
+            <i class="bi bi-telephone"></i> +62 812-3456-7890
+          </p>
+
+          <!-- MAPS -->
+          <div class="footer-map">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.179511260456!2d113.70206417595667!3d-8.09317179195344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd69435c6ce6f6b%3A0x696acd3c02e5dacf!2sPoliteknik%20Negeri%20Jember!5e0!3m2!1sen!2sid!4v1709375339812!5m2!1sen!2sid"
+              width="100%"
+              height="160"
+              style="border: 0"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM -->
+      <div class="footer-bottom">
+        <p>
+          © <span id="year"></span> Microsleep AI — Politeknik Negeri Jember
+        </p>
+
+        <button class="back-to-top" onclick="scrollToSection('home')">
+          <i class="bi bi-arrow-up"></i>
+        </button>
+      </div>
+    </footer>
+
+    <script>
+      function scrollToSection(id) {
+        const section = document.getElementById(id);
+        if (section) {
+          window.scrollTo({
+            top: section.offsetTop - 80,
+            behavior: "smooth",
+          });
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- ANIMASI-->
+    <!-- ============================================== -->
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const sections = document.querySelectorAll("section");
+
+        document.querySelectorAll('nav a[href^="#"]').forEach((link) => {
+          link.addEventListener("click", function (e) {
+            const href = this.getAttribute("href");
+            if (href === "#" || href === "") return;
+
+            const target = document.querySelector(href);
+            if (!target) return;
+
+            e.preventDefault();
+
+            sections.forEach((sec) => {
+              sec.classList.remove("active");
+              sec.classList.add("exit");
+            });
+
+            setTimeout(() => {
+              window.scrollTo({
+                top: target.offsetTop - 90,
+                behavior: "smooth",
+              });
+            }, 150);
+
+            setTimeout(() => {
+              sections.forEach((sec) => {
+                sec.classList.remove("exit");
+                sec.classList.add("active");
+              });
+            }, 400);
+          });
+        });
+      });
+    </script>
+
+    <script>
+      const slider = document.getElementById("jamSlider");
+      const jamTxt = document.getElementById("jamHasil");
+      const riskLabel = document.getElementById("riskLabel");
+      const riskDesc = document.getElementById("riskDesc");
+      const saran = document.getElementById("saranText");
+
+      slider.addEventListener("input", () => {
+        const val = Number(slider.value);
+        jamTxt.textContent = val;
+
+        let risk = "";
+        let color = "";
+        let desc = "";
+        let rec = "";
+
+        if (val <= 4) {
+          risk = "Low";
+          color = "#388E3C";
+          desc = "Risiko rendah. Tetap jaga stamina dan fokus saat berkendara.";
+          rec = "Istirahat tetap dianjurkan setiap 2–3 jam sekali.";
+        } else if (val <= 8) {
+          risk = "Medium";
+          color = "#FFA000";
+          desc = "Risiko sedang. Pastikan cukup tidur sebelum berkendara.";
+          rec = "Istirahat minimal setiap 2 jam perjalanan.";
+        } else if (val <= 12) {
+          risk = "High";
+          color = "#E64A19";
+          desc = "Risiko tinggi. Pengemudi rentan microsleep.";
+          rec = "Kurangi jam mengemudi dan ambil istirahat tambahan.";
+        } else {
+          risk = "Critical";
+          color = "#C62828";
+          desc = "Risiko kritis! Microsleep sangat mungkin terjadi.";
+          rec = `Dengan mengemudi ${val} jam/hari, Anda sangat membutuhkan sistem deteksi microsleep.`;
+        }
+
+        riskLabel.textContent = `Risiko: ${risk}`;
+        riskLabel.style.color = color;
+
+        riskDesc.textContent = desc;
+        saran.textContent = rec;
+      });
+    </script>
+
+    <script>
+      const counters = document.querySelectorAll(".counter");
+      let countersPlayed = false;
+
+      const counterObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !countersPlayed) {
+              countersPlayed = true;
+
+              counters.forEach((counter) => {
+                const target = parseFloat(counter.getAttribute("data-target"));
+                const isDecimal = target % 1 !== 0;
+                const speed = 60;
+                let count = 0;
+                const step = target / speed;
+
+                const update = () => {
+                  count += step;
+                  if (count < target) {
+                    counter.textContent = isDecimal
+                      ? count.toFixed(1)
+                      : Math.floor(count);
+                    requestAnimationFrame(update);
+                  } else {
+                    counter.textContent = isDecimal
+                      ? target.toFixed(1)
+                      : target;
+                  }
+                };
+
+                update();
+              });
+            }
+          });
+        },
+        { threshold: 0.6 }
+      );
+
+      counters.forEach((c) => counterObserver.observe(c));
+    </script>
+  </body>
 </html>
